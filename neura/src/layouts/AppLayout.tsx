@@ -59,7 +59,7 @@ export default function AppLayout() {
         </nav>
         <div className="sidebar-bottom">
           <div className="pitch-card">
-            <span className="tiny-label">PIZZA PITCH · 2026</span>
+            <span className="tiny-label"></span>
             <h3>
               Большая забота.
               <br />
@@ -106,10 +106,7 @@ export default function AppLayout() {
             <Outlet />
           </motion.div>
         </main>
-        <footer className="app-footer">
-          © 2026 {brand.name}. Ранний прототип.
-          <span>Создано, чтобы замечать больше</span>
-        </footer>
+        
       </div>
     </div>
   );

@@ -184,7 +184,6 @@ export default function Landing() {
       </section>
       <footer className="landing-footer">
         <Logo />
-        <span>Ранний прототип · Pizza Pitch 2026</span>
         <Link to="/about">
           Ответственный подход к AI
           <ArrowUpRight size={15} />

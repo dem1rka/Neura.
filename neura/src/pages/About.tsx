@@ -11,7 +11,7 @@ export default function About() {
   return (
     <>
       <Heading
-        eyebrow="О ПРОЕКТЕ · PIZZA PITCH"
+        eyebrow="О ПРОЕКТЕ"
         title="Технологии начинаются с внимания"
         description="Neura — ранний прототип платформы поддержки наблюдения за особенностями развития и поведения детей."
       />
