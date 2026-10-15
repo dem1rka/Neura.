@@ -1,7 +1,9 @@
+import { useT, localeTag } from "../i18n";
 import type { ReactNode } from "react";
 import { ArrowUpRight, ShieldCheck, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 export function Badge({ children }: { children: ReactNode }) {
+  const t = useT();
   return (
     <span className="badge">
       <span />
@@ -20,6 +22,7 @@ export function Heading({
   description: string;
   action?: ReactNode;
 }) {
+  const t = useT();
   return (
     <div className="page-heading">
       <div>
@@ -32,13 +35,17 @@ export function Heading({
   );
 }
 export function Disclaimer() {
+  const t = useT();
   return (
     <div className="disclaimer">
       <ShieldCheck size={20} />
       <p>
-        <strong>Внимательное наблюдение. Ответственная интерпретация.</strong>{" "}
-        Прототип помогает структурировать наблюдения и не ставит диагноз. Все
-        AI-результаты симулированы. Интерпретация требует участия специалиста.
+        <strong>
+          {t("Внимательное наблюдение. Ответственная интерпретация.")}
+        </strong>{" "}
+        {t(
+          "Прототип помогает структурировать наблюдения и не ставит диагноз. Все AI-результаты симулированы. Интерпретация требует участия специалиста.",
+        )}
       </p>
     </div>
   );
@@ -50,6 +57,7 @@ export function Card({
   children: ReactNode;
   className?: string;
 }) {
+  const t = useT();
   return <section className={"card " + className}>{children}</section>;
 }
 export function Empty({
@@ -63,6 +71,7 @@ export function Empty({
   to: string;
   label: string;
 }) {
+  const t = useT();
   return (
     <Card className="empty">
       <Sparkles size={36} />
@@ -76,11 +85,12 @@ export function Empty({
   );
 }
 export function Progress({ value }: { value: number }) {
+  const t = useT();
   return (
     <div
       className="progress"
       role="progressbar"
-      aria-label="Прогресс"
+      aria-label={t("Прогресс")}
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={100}

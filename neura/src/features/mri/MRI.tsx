@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../../i18n";
 import { useEffect, useRef, useState } from "react";
 import {
   Upload,
@@ -11,13 +12,14 @@ import {
 } from "lucide-react";
 import { Card, Heading, Progress, Disclaimer } from "../../components/UI";
 import { service } from "../../services/storage";
-const steps = [
-  "Проверка демонстрационного сценария",
-  "Симуляция нормализации",
-  "Симуляция выделения признаков",
-  "Подготовка демонстрационного отчёта",
-];
 export default function MRI() {
+  const t = useT();
+  const steps = [
+    t("Проверка демонстрационного сценария"),
+    t("Симуляция нормализации"),
+    t("Симуляция выделения признаков"),
+    t("Подготовка демонстрационного отчёта"),
+  ];
   const [filename, setFilename] = useState("");
   const [source, setSource] = useState<"example" | "local">("example");
   const [error, setError] = useState("");
@@ -65,17 +67,20 @@ export default function MRI() {
   return (
     <>
       <Heading
-        eyebrow="NEURA LAB · ИССЛЕДОВАТЕЛЬСКИЙ МОДУЛЬ"
-        title="Исследовать возможности. Честно."
-        description="Концепция будущего МРТ-модуля — от изображения к исследовательским признакам."
+        eyebrow={t("NEURA LAB · ИССЛЕДОВАТЕЛЬСКИЙ МОДУЛЬ")}
+        title={t("Исследовать возможности. Честно.")}
+        description={t(
+          "Концепция будущего МРТ-модуля — от изображения к исследовательским признакам.",
+        )}
       />
       <div className="lab-notice">
         <FlaskConical size={21} />
         <div>
-          <strong>Это симуляция. Обученной модели нет.</strong>
+          <strong>{t("Это симуляция. Обученной модели нет.")}</strong>
           <p>
-            Файлы не читаются, не сохраняются и никуда не отправляются.
-            Результат не зависит от выбранного файла.
+            {t(
+              "Файлы не читаются, не сохраняются и никуда не отправляются. Результат не зависит от выбранного файла.",
+            )}
           </p>
         </div>
         <span className="pill">EXPERIMENTAL</span>
@@ -83,7 +88,7 @@ export default function MRI() {
       <div className="mri-grid">
         <Card>
           <div className="section-line">
-            <h2>01 / Исходный материал</h2>
+            <h2>{t("01 / Исходный материал")}</h2>
             <ScanLine size={20} />
           </div>
           <div
@@ -100,30 +105,30 @@ export default function MRI() {
             }}
           >
             <Upload size={32} />
-            <h3>{filename || "Перетащите файл сюда"}</h3>
-            <p>NIfTI · .nii или .nii.gz</p>
+            <h3>{filename || t("Перетащите файл сюда")}</h3>
+            <p>{t("NIfTI · .nii или .nii.gz")}</p>
             <button
               className="button secondary"
               disabled={running}
               onClick={() => input.current?.click()}
             >
-              Выбрать файл
+              {t("Выбрать файл")}
             </button>
             <input
               ref={input}
               type="file"
               accept=".nii,.gz"
-              aria-label="Выберите МРТ-файл"
+              aria-label={t("Выберите МРТ-файл")}
               hidden
               onChange={(e) => select(e.target.files?.[0])}
             />
           </div>
           {error && (
             <p role="alert" className="error">
-              {error}
+              {t(error)}
             </p>
           )}
-          <div className="or-line">или используйте готовый пример</div>
+          <div className="or-line">{t("или используйте готовый пример")}</div>
           <button
             className={
               "example-file " +
@@ -142,14 +147,15 @@ export default function MRI() {
               <Layers />
             </span>
             <span>
-              <strong>Демонстрационный объём</strong>
-              <small>Синтетический пример · без данных пациента</small>
+              <strong>{t("Демонстрационный объём")}</strong>
+              <small>{t("Синтетический пример · без данных пациента")}</small>
             </span>
             <ArrowRight size={18} />
           </button>
           <p className="small-note">
-            Локально хранится только факт завершения симуляции. Имя и содержимое
-            выбранного файла не сохраняются.
+            {t(
+              "Локально хранится только факт завершения симуляции. Имя и содержимое выбранного файла не сохраняются.",
+            )}
           </p>
           <button
             className="button full"
@@ -162,22 +168,24 @@ export default function MRI() {
             }}
           >
             {running
-              ? "Выполняется симуляция…"
+              ? t("Выполняется симуляция…")
               : done
-                ? "Повторить симуляцию"
-                : "Запустить симуляцию"}
+                ? t("Повторить симуляцию")
+                : t("Запустить симуляцию")}
             <ArrowRight size={18} />
           </button>
         </Card>
         <Card className="mri-preview">
           <div className="section-line">
-            <h2>Схематичный демо-срез</h2>
-            <span className="pill">SVG · НЕ МРТ</span>
+            <h2>{t("Схематичный демо-срез")}</h2>
+            <span className="pill">{t("SVG · НЕ МРТ")}</span>
           </div>
           <svg
             viewBox="0 0 400 290"
             role="img"
-            aria-label="Синтетическая абстрактная схема среза, не медицинский снимок"
+            aria-label={t(
+              "Синтетическая абстрактная схема среза, не медицинский снимок",
+            )}
           >
             <defs>
               <radialGradient id="slice">
@@ -232,14 +240,15 @@ export default function MRI() {
             <span>DEMO ONLY</span>
           </div>
           <p>
-            Авторская иллюстрация для демонстрации интерфейса. Не отображает
-            выбранный файл.
+            {t(
+              "Авторская иллюстрация для демонстрации интерфейса. Не отображает выбранный файл.",
+            )}
           </p>
         </Card>
       </div>
       <Card className="pipeline">
         <div className="section-line">
-          <h2>02 / Исследовательский процесс</h2>
+          <h2>{t("02 / Исследовательский процесс")}</h2>
           <span className="muted">{progress}%</span>
         </div>
         <Progress value={progress} />
@@ -267,37 +276,37 @@ export default function MRI() {
           {running
             ? steps[Math.min(3, Math.floor(progress / 25))]
             : done
-              ? "Демонстрационный процесс завершён."
-              : "Выберите пример или файл для запуска."}
+              ? t("Демонстрационный процесс завершён.")
+              : t("Выберите пример или файл для запуска.")}
         </p>
       </Card>
       {done && (
         <Card className="simulation-result">
           <CheckCircle2 />
-          <h2>Сценарий завершён</h2>
+          <h2>{t("Сценарий завершён")}</h2>
           <p>
-            Показаны этапы предполагаемого исследовательского процесса. Реальная
-            предобработка, извлечение признаков и медицинский анализ не
-            выполнялись.
+            {t(
+              "Показаны этапы предполагаемого исследовательского процесса. Реальная предобработка, извлечение признаков и медицинский анализ не выполнялись.",
+            )}
           </p>
           <div className="result-tags">
-            <span>Режим: симуляция</span>
-            <span>Модель: не подключена</span>
-            <span>Диагностический вывод: отсутствует</span>
+            <span>{t("Режим: симуляция")}</span>
+            <span>{t("Модель: не подключена")}</span>
+            <span>{t("Диагностический вывод: отсутствует")}</span>
           </div>
         </Card>
       )}
       <Card>
-        <h2>Что планируется исследовать</h2>
+        <h2>{t("Что планируется исследовать")}</h2>
         <p>
-          Возможный стек: Python, PyTorch, MONAI и свёрточные нейронные сети
-          (CNN). ABIDE рассматривается как возможный исследовательский набор
-          данных. Архитектура и протокол исследования ещё не определены.
+          {t(
+            "Возможный стек: Python, PyTorch, MONAI и свёрточные нейронные сети (CNN). ABIDE рассматривается как возможный исследовательский набор данных. Архитектура и протокол исследования ещё не определены.",
+          )}
         </p>
         <p className="small-note">
-          Будущий модуль потребует проверки качества данных, независимой
-          валидации, оценки смещений и этического согласования. Прототип не
-          заявляет клиническую точность и не рассчитывает вероятность РАС.
+          {t(
+            "Будущий модуль потребует проверки качества данных, независимой валидации, оценки смещений и этического согласования. Прототип не заявляет клиническую точность и не рассчитывает вероятность РАС.",
+          )}
         </p>
       </Card>
       <Disclaimer />

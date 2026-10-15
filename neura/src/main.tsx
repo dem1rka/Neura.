@@ -1,3 +1,4 @@
+import { useT, localeTag, applyAppearance } from "./i18n";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
@@ -12,7 +13,9 @@ import QuestionnaireReport from "./features/questionnaire/QuestionnaireReport";
 import MRI from "./features/mri/MRI";
 import { Empty } from "./components/UI";
 import "./styles/index.css";
+applyAppearance();
 function App() {
+  const t = useT();
   const { pathname } = useLocation();
   const [storageError, setStorageError] = useState(false);
   useEffect(() => {
@@ -27,11 +30,12 @@ function App() {
     <>
       {storageError && (
         <div role="alert" className="storage-alert">
-          Не удалось сохранить данные в браузере. Не закрывайте страницу до
-          завершения. Проверьте доступность локального хранилища.
+          {t(
+            "Не удалось сохранить данные в браузере. Не закрывайте страницу до завершения. Проверьте доступность локального хранилища.",
+          )}
           <button
             onClick={() => setStorageError(false)}
-            aria-label="Закрыть уведомление"
+            aria-label={t("Закрыть уведомление")}
           >
             ×
           </button>
@@ -54,10 +58,10 @@ function App() {
             path="*"
             element={
               <Empty
-                title="Страница не найдена"
-                text="Вернитесь в рабочее пространство."
+                title={t("Страница не найдена")}
+                text={t("Вернитесь в рабочее пространство.")}
                 to="/dashboard"
-                label="На главную"
+                label={t("На главную")}
               />
             }
           />
@@ -73,3 +77,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </React.StrictMode>,
 );
+import "./styles/preferences.css";

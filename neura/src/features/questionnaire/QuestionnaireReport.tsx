@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../../i18n";
 import { Printer } from "lucide-react";
 import {
   BarChart,
@@ -8,27 +9,31 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { questions, categories, frequency } from "../../data/content";
+import { getContent } from "../../data/content";
 import { service } from "../../services/storage";
 import { Card, Heading, Empty, Disclaimer } from "../../components/UI";
 export default function QuestionnaireReport() {
+  const t = useT();
+  const { questions, categories, frequency } = getContent(t);
   const s = service.questionnaire();
   if (!s.completedAt)
     return (
       <Empty
-        title="Пока нет завершённой анкеты"
-        text="Ответьте на десять вопросов, чтобы получить описательный отчёт."
+        title={t("Пока нет завершённой анкеты")}
+        text={t(
+          "Ответьте на десять вопросов, чтобы получить описательный отчёт.",
+        )}
         to="/questionnaire"
-        label="Открыть анкету"
+        label={t("Открыть анкету")}
       />
     );
   const data = categories.map((name, i) => ({
     name: [
-      "Взаимодействие",
-      "Коммуникация",
-      "Гибкость",
-      "Сенсорика",
-      "Инструкции",
+      t("Взаимодействие"),
+      t("Коммуникация"),
+      t("Гибкость"),
+      t("Сенсорика"),
+      t("Инструкции"),
     ][i],
     ...Object.fromEntries(
       frequency.map((label, value) => [
@@ -41,24 +46,27 @@ export default function QuestionnaireReport() {
   return (
     <>
       <Heading
-        eyebrow="АНКЕТА ПЕДАГОГА · ДЕМОНСТРАЦИОННЫЙ ОТЧЁТ"
-        title="Повседневность в деталях"
-        description={`10 ответов · ${new Date(s.completedAt).toLocaleString("ru-RU")} · иллюстративная анкета`}
+        eyebrow={t("АНКЕТА ПЕДАГОГА · ДЕМОНСТРАЦИОННЫЙ ОТЧЁТ")}
+        title={t("Повседневность в деталях")}
+        description={t("10 ответов · {0} · иллюстративная анкета", {
+          "0": new Date(s.completedAt).toLocaleString(localeTag()),
+        })}
         action={
           <button
             className="button secondary print-hide"
             onClick={() => window.print()}
           >
             <Printer size={18} />
-            Печать / PDF
+            {t("Печать / PDF")}
           </button>
         }
       />
       <Card>
-        <h2>Распределение ответов по областям</h2>
+        <h2>{t("Распределение ответов по областям")}</h2>
         <p className="muted">
-          Количество выбранных вариантов, а не оценка навыка или риска. В каждой
-          области два вопроса.
+          {t(
+            "Количество выбранных вариантов, а не оценка навыка или риска. В каждой области два вопроса.",
+          )}
         </p>
         <div className="chart tall">
           <ResponsiveContainer width="100%" height="100%">
@@ -95,24 +103,30 @@ export default function QuestionnaireReport() {
               <h3>{c}</h3>
               <p>
                 {items
-                  .map(
-                    (q) =>
-                      `Вопрос ${Number(q.id) + 1}: «${frequency[s.answers[q.id]]}»`,
+                  .map((q) =>
+                    t("Вопрос {0}: «{1}»", {
+                      "0": Number(q.id) + 1,
+                      "1": frequency[s.answers[q.id]],
+                    }),
                   )
                   .join(". ")}
                 .
               </p>
               <small>
                 {items.some((q) => s.answers[q.id] === 4)
-                  ? "Для обсуждения: в каких ситуациях можно дополнить наблюдения?"
-                  : "Для обсуждения: меняется ли поведение в другой обстановке или при поддержке взрослого?"}
+                  ? t(
+                      "Для обсуждения: в каких ситуациях можно дополнить наблюдения?",
+                    )
+                  : t(
+                      "Для обсуждения: меняется ли поведение в другой обстановке или при поддержке взрослого?",
+                    )}
               </small>
             </Card>
           );
         })}
       </div>
       <Card>
-        <h2>Полная анкета</h2>
+        <h2>{t("Полная анкета")}</h2>
         {questions.map((q) => (
           <div className="report-answer" key={q.id}>
             <p>
@@ -122,8 +136,9 @@ export default function QuestionnaireReport() {
           </div>
         ))}
         <p className="small-note">
-          Сводка построена прямым подсчётом ответов. Частота отдельных действий
-          сама по себе не указывает на наличие или отсутствие РАС.
+          {t(
+            "Сводка построена прямым подсчётом ответов. Частота отдельных действий сама по себе не указывает на наличие или отсутствие РАС.",
+          )}
         </p>
       </Card>
       <Disclaimer />

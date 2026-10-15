@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../i18n";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -23,18 +24,20 @@ import {
 import { Card, Heading, Disclaimer } from "../components/UI";
 import { Scene } from "../components/Scene";
 import { service } from "../services/storage";
-import { demoActivity } from "../data/content";
+import { getContent } from "../data/content";
 import type { Observation } from "../types";
-const chart = [
-  { day: "Пн", game: 2, form: 1 },
-  { day: "Вт", game: 4, form: 2 },
-  { day: "Ср", game: 3, form: 2 },
-  { day: "Чт", game: 6, form: 3 },
-  { day: "Пт", game: 5, form: 4 },
-  { day: "Сб", game: 8, form: 5 },
-  { day: "Вс", game: 7, form: 4 },
-];
 export default function Dashboard() {
+  const t = useT();
+  const { demoActivity } = getContent(t);
+  const chart = [
+    { day: t("Пн"), game: 2, form: 1 },
+    { day: t("Вт"), game: 4, form: 2 },
+    { day: t("Ср"), game: 3, form: 2 },
+    { day: t("Чт"), game: 6, form: 3 },
+    { day: t("Пт"), game: 5, form: 4 },
+    { day: t("Сб"), game: 8, form: 5 },
+    { day: t("Вс"), game: 7, form: 4 },
+  ];
   const [data, setData] = useState<Awaited<
     ReturnType<typeof service.overview>
   > | null>(null);
@@ -50,7 +53,7 @@ export default function Dashboard() {
   if (!data)
     return (
       <div className="loading" role="status">
-        Загружаем пространство наблюдений…
+        {t("Загружаем пространство наблюдений…")}
       </div>
     );
   const g = Number(!!data.game?.completedAt),
@@ -61,7 +64,7 @@ export default function Dashboard() {
       ? [
           {
             id: "local-game",
-            title: "Ваше игровое наблюдение",
+            title: t("Ваше игровое наблюдение"),
             kind: "game" as const,
             date: data.game!.completedAt!,
             demo: false,
@@ -72,7 +75,7 @@ export default function Dashboard() {
       ? [
           {
             id: "local-q",
-            title: "Ваша анкета педагога",
+            title: t("Ваша анкета педагога"),
             kind: "questionnaire" as const,
             date: data.questionnaire.completedAt!,
             demo: false,
@@ -81,7 +84,7 @@ export default function Dashboard() {
       : []),
     ...data.mri.map((v) => ({
       id: v.id,
-      title: "Локальная симуляция МРТ",
+      title: t("Локальная симуляция МРТ"),
       kind: "mri" as const,
       date: v.completedAt,
       demo: false,
@@ -94,68 +97,73 @@ export default function Dashboard() {
   return (
     <>
       <Heading
-        eyebrow="ОБЗОР ПЛАТФОРМЫ"
-        title="Замечать больше. Понимать лучше."
-        description="Все инструменты наблюдения — в одном спокойном пространстве."
+        eyebrow={t("ОБЗОР ПЛАТФОРМЫ")}
+        title={t("Замечать больше. Понимать лучше.")}
+        description={t(
+          "Все инструменты наблюдения — в одном спокойном пространстве.",
+        )}
         action={
           <Link className="button" to="/game">
             <Plus size={18} />
-            Новое наблюдение
+            {t("Новое наблюдение")}
           </Link>
         }
       />
       <div className="welcome-banner">
         <div>
-          <span className="pill">ОТ НАБЛЮДЕНИЯ К ПОНИМАНИЮ</span>
+          <span className="pill">{t("ОТ НАБЛЮДЕНИЯ К ПОНИМАНИЮ")}</span>
           <h2>
-            У каждого ребёнка
+            {t("У каждого ребёнка")}
             <br />
-            свой способ открывать мир.
+            {t("свой способ открывать мир.")}
           </h2>
           <p>
-            Соединяем игру, опыт педагога и исследовательские
-            <br className="desktop" /> инструменты для более целостного взгляда.
+            {t("Соединяем игру, опыт педагога и исследовательские")}
+            <br className="desktop" />
+            {t("инструменты для более целостного взгляда.")}
           </p>
           <Link to="/about">
-            Как работает Neura <ArrowRight size={17} />
+            {t("Как работает Neura")}
+            <ArrowRight size={17} />
           </Link>
         </div>
         <div className="banner-art">
           <Scene compact />
           <span className="art-note">
-            <span className="status-dot" /> Привет! Я Айко
+            <span className="status-dot" />
+            {t("Привет! Я Айко")}
           </span>
         </div>
       </div>
       <div className="stats-grid">
         {[
           {
-            label: "Всего наблюдений",
+            label: t("Всего наблюдений"),
             value: 0 + g + q + m,
             icon: Layers,
             tone: "blue",
-            note: "Объединяя разные перспективы",
+            note: t("Объединяя разные перспективы"),
           },
           {
-            label: "Игровых сессий",
+            label: t("Игровых сессий"),
             value: 0 + g,
             icon: Gamepad2,
             tone: "purple",
-            note: "8 ситуаций в каждой игре",
+            note: t("8 ситуаций в каждой игре"),
           },
           {
-            label: "Анкет педагогов",
+            label: t("Анкет педагогов"),
             value: 0 + q,
             icon: ClipboardList,
             tone: "teal",
-            note: "Опыт ежедневного общения",
+            note: t("Опыт ежедневного общения"),
           },
           {
-            label: "МРТ-симуляций",
+            label: t("МРТ-симуляций"),
             value: 0 + m,
             icon: ScanLine,
             tone: "orange",
-            note: "Исследовательский модуль",
+            note: t("Исследовательский модуль"),
           },
         ].map(({ label, value, icon: Icon, tone, note }) => (
           <Card key={label} className="stat">
@@ -171,37 +179,43 @@ export default function Dashboard() {
         ))}
       </div>
       <div className="section-line">
-        <h2>Три инструмента. Одна картина.</h2>
-        <span>Выберите, с чего начать</span>
+        <h2>{t("Три инструмента. Одна картина.")}</h2>
+        <span>{t("Выберите, с чего начать")}</span>
       </div>
       <div className="modules-grid">
         {[
           {
-            title: "Приключение Айко",
-            label: "ИГРОВОЕ НАБЛЮДЕНИЕ",
-            text: "Знакомые ситуации, маленькие открытия и бережное наблюдение в игре.",
+            title: t("Приключение Айко"),
+            label: t("ИГРОВОЕ НАБЛЮДЕНИЕ"),
+            text: t(
+              "Знакомые ситуации, маленькие открытия и бережное наблюдение в игре.",
+            ),
             to: "/game",
             icon: Gamepad2,
             tone: "blue",
-            foot: "7–8 лет · 10–15 минут",
+            foot: t("7–8 лет · 10–15 минут"),
           },
           {
-            title: "Взгляд педагога",
-            label: "АНКЕТИРОВАНИЕ",
-            text: "Структурируйте наблюдения за общением, гибкостью и повседневным поведением.",
+            title: t("Взгляд педагога"),
+            label: t("АНКЕТИРОВАНИЕ"),
+            text: t(
+              "Структурируйте наблюдения за общением, гибкостью и повседневным поведением.",
+            ),
             to: "/questionnaire",
             icon: ClipboardList,
             tone: "teal",
-            foot: "10 вопросов · около 5 минут",
+            foot: t("10 вопросов · около 5 минут"),
           },
           {
-            title: "Исследовать глубже",
-            label: "МРТ · ЭКСПЕРИМЕНТАЛЬНО",
-            text: "Познакомьтесь с концепцией анализа МРТ в прозрачной симуляции процесса.",
+            title: t("Исследовать глубже"),
+            label: t("МРТ · ЭКСПЕРИМЕНТАЛЬНО"),
+            text: t(
+              "Познакомьтесь с концепцией анализа МРТ в прозрачной симуляции процесса.",
+            ),
             to: "/mri",
             icon: ScanLine,
             tone: "purple",
-            foot: "Без анализа медицинских данных",
+            foot: t("Без анализа медицинских данных"),
           },
         ].map(({ title, label, text, to, icon: Icon, tone, foot }) => (
           <Link className="card module" to={to} key={to}>
@@ -225,26 +239,26 @@ export default function Dashboard() {
         <Card>
           <div className="section-line">
             <div>
-              <h2>Ритм наблюдений</h2>
-              <p className="muted">Вымышленный пример активности</p>
+              <h2>{t("Ритм наблюдений")}</h2>
+              <p className="muted">{t("Вымышленный пример активности")}</p>
             </div>
             <select
-              aria-label="Период графика"
+              aria-label={t("Период графика")}
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
             >
-              <option value="week">Эта неделя</option>
-              <option value="month">4 недели</option>
+              <option value="week">{t("Эта неделя")}</option>
+              <option value="month">{t("4 недели")}</option>
             </select>
           </div>
           <div className="chart-legend">
             <span>
               <i />
-              Игровые сессии
+              {t("Игровые сессии")}
             </span>
             <span>
               <i />
-              Анкеты
+              {t("Анкеты")}
             </span>
           </div>
           <div className="chart">
@@ -254,10 +268,10 @@ export default function Dashboard() {
                   period === "week"
                     ? chart
                     : [
-                        { day: "1 нед.", game: 4, form: 2 },
-                        { day: "2 нед.", game: 8, form: 5 },
-                        { day: "3 нед.", game: 6, form: 3 },
-                        { day: "4 нед.", game: 14, form: 8 },
+                        { day: t("1 нед."), game: 4, form: 2 },
+                        { day: t("2 нед."), game: 8, form: 5 },
+                        { day: t("3 нед."), game: 6, form: 3 },
+                        { day: t("4 нед."), game: 14, form: 8 },
                       ]
                 }
               >
@@ -285,7 +299,7 @@ export default function Dashboard() {
                 <Area
                   type="monotone"
                   dataKey="game"
-                  name="Игровые сессии"
+                  name={t("Игровые сессии")}
                   stroke="#4c80eb"
                   strokeWidth={3}
                   fill="url(#blue-chart)"
@@ -293,7 +307,7 @@ export default function Dashboard() {
                 <Area
                   type="monotone"
                   dataKey="form"
-                  name="Анкеты"
+                  name={t("Анкеты")}
                   stroke="#50b8ac"
                   strokeWidth={2}
                   fill="transparent"
@@ -304,19 +318,19 @@ export default function Dashboard() {
         </Card>
         <Card>
           <div className="section-line">
-            <h2>Последние события</h2>
+            <h2>{t("Последние события")}</h2>
             <Clock size={18} />
           </div>
           <select
             className="activity-filter"
-            aria-label="Фильтр событий"
+            aria-label={t("Фильтр событий")}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
-            <option value="all">Все модули</option>
-            <option value="game">Игры</option>
-            <option value="questionnaire">Анкеты</option>
-            <option value="mri">МРТ</option>
+            <option value="all">{t("Все модули")}</option>
+            <option value="game">{t("Игры")}</option>
+            <option value="questionnaire">{t("Анкеты")}</option>
+            <option value="mri">{t("МРТ")}</option>
           </select>
           <div className="activity-list">
             {activity.slice(0, 4).map((a) => (
@@ -337,9 +351,9 @@ export default function Dashboard() {
                   <strong>{a.title}</strong>
                   <small>
                     {a.demo
-                      ? "Вымышленный пример"
-                      : new Date(a.date).toLocaleDateString("ru-RU")}{" "}
-                    · {a.kind === "mri" ? "Симуляция" : "Завершено"}
+                      ? t("Вымышленный пример")
+                      : new Date(a.date).toLocaleDateString(localeTag())}{" "}
+                    · {a.kind === "mri" ? t("Симуляция") : t("Завершено")}
                   </small>
                 </div>
                 <Chevron />
@@ -347,8 +361,9 @@ export default function Dashboard() {
             ))}
           </div>
           <p className="small-note">
-            24 исходных записи — вымышленный набор. Ваши завершённые действия
-            добавляются к нему.
+            {t(
+              "24 исходных записи — вымышленный набор. Ваши завершённые действия добавляются к нему.",
+            )}
           </p>
         </Card>
       </div>
@@ -357,5 +372,7 @@ export default function Dashboard() {
   );
 }
 function Chevron() {
+  const t = useT();
+  const { demoActivity } = getContent(t);
   return <ArrowUpRight size={16} className="muted" />;
 }

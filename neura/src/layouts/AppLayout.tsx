@@ -1,3 +1,5 @@
+import { PreferencesControls } from "../components/PreferencesControls";
+import { useT, localeTag } from "../i18n";
 import { NavLink, Outlet, Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -13,16 +15,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { brand } from "../data/content";
+import { getContent } from "../data/content";
 import { Badge } from "../components/UI";
-const nav = [
-  ["/dashboard", "Обзор", LayoutDashboard],
-  ["/game", "Приключение Айко", Gamepad2],
-  ["/questionnaire", "Анкета педагога", ClipboardList],
-  ["/mri", "Анализ МРТ", ScanLine],
-  ["/about", "О проекте", Info],
-] as const;
 export function Logo() {
+  const t = useT();
+  const { brand } = getContent(t);
   return (
     <Link className="logo" to="/">
       <span className="logo-icon">
@@ -34,13 +31,22 @@ export function Logo() {
   );
 }
 export default function AppLayout() {
+  const t = useT();
+  const { brand } = getContent(t);
+  const nav = [
+    ["/dashboard", t("Обзор"), LayoutDashboard],
+    ["/game", t("Приключение Айко"), Gamepad2],
+    ["/questionnaire", t("Анкета педагога"), ClipboardList],
+    ["/mri", t("Анализ МРТ"), ScanLine],
+    ["/about", t("О проекте"), Info],
+  ] as const;
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   return (
     <div className="app-shell">
       <aside className={"sidebar " + (open ? "is-open" : "")}>
         <Logo />
-        <div className="workspace-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+        <div className="workspace-label">{t("РАБОЧЕЕ ПРОСТРАНСТВО")}</div>
         <nav>
           {nav.map(([to, label, Icon]) => (
             <NavLink
@@ -61,19 +67,20 @@ export default function AppLayout() {
           <div className="pitch-card">
             <span className="tiny-label"></span>
             <h3>
-              Большая забота.
+              {t("Большая забота.")}
               <br />
-              Маленькие шаги.
+              {t("Маленькие шаги.")}
             </h3>
             <Link to="/about">
-              Познакомиться с проектом <ArrowUpRight size={15} />
+              {t("Познакомиться с проектом")}
+              <ArrowUpRight size={15} />
             </Link>
           </div>
           <div className="profile">
-            <span>ДС</span>
+            <span>{t("ДС")}</span>
             <div>
-              <strong>Демо-специалист</strong>
-              <small>Исследовательский доступ</small>
+              <strong>{t("Демо-специалист")}</strong>
+              <small>{t("Исследовательский доступ")}</small>
             </div>
           </div>
         </div>
@@ -82,19 +89,22 @@ export default function AppLayout() {
         <header className="topbar">
           <button
             className="icon-button mobile-menu"
-            aria-label="Меню"
+            aria-label={t("Меню")}
             onClick={() => setOpen(!open)}
           >
             {open ? <X /> : <Menu />}
           </button>
           <div className="breadcrumbs">
-            Платформа <ChevronRight size={14} />
+            {t("Платформа")}
+            <ChevronRight size={14} />
             <strong>
-              {nav.find(([path]) => pathname.startsWith(path))?.[1] || "Отчёт"}
+              {nav.find(([path]) => pathname.startsWith(path))?.[1] ||
+                t("Отчёт")}
             </strong>
           </div>
-          <Badge>Демонстрационные данные</Badge>
-          <span className="avatar">ДС</span>
+          <Badge>{t("Демонстрационные данные")}</Badge>
+          <PreferencesControls />
+          <span className="avatar">{t("ДС")}</span>
         </header>
         <main>
           <motion.div
@@ -106,7 +116,6 @@ export default function AppLayout() {
             <Outlet />
           </motion.div>
         </main>
-        
       </div>
     </div>
   );

@@ -1,10 +1,13 @@
+import { useT, localeTag } from "../../i18n";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CheckCircle2, Save } from "lucide-react";
-import { questions, categories, frequency } from "../../data/content";
+import { getContent } from "../../data/content";
 import { service } from "../../services/storage";
 import { Card, Heading, Progress, Disclaimer } from "../../components/UI";
 export default function Questionnaire() {
+  const t = useT();
+  const { questions, categories, frequency } = getContent(t);
   const [session, setSession] = useState(service.questionnaire);
   const [index, setIndex] = useState(() =>
     Math.min(
@@ -25,11 +28,13 @@ export default function Questionnaire() {
     return (
       <Card className="empty">
         <CheckCircle2 size={48} />
-        <h1>Наблюдения сохранены</h1>
-        <p>Ваш опыт помогает дополнить картину повседневного поведения.</p>
+        <h1>{t("Наблюдения сохранены")}</h1>
+        <p>
+          {t("Ваш опыт помогает дополнить картину повседневного поведения.")}
+        </p>
         <div className="actions">
           <Link className="button" to="/questionnaire/report">
-            Посмотреть отчёт
+            {t("Посмотреть отчёт")}
             <ArrowRight size={18} />
           </Link>
           <button
@@ -41,24 +46,26 @@ export default function Questionnaire() {
               setIndex(0);
             }}
           >
-            Заполнить заново
+            {t("Заполнить заново")}
           </button>
         </div>
         <p className="small-note">
-          Повторное заполнение заменит текущую анкету.
+          {t("Повторное заполнение заменит текущую анкету.")}
         </p>
       </Card>
     );
   return (
     <>
       <Heading
-        eyebrow="ВЗГЛЯД ПЕДАГОГА"
-        title="То, что заметно каждый день"
-        description="Опирайтесь на наблюдения за последние две недели в привычной для ребёнка обстановке."
+        eyebrow={t("ВЗГЛЯД ПЕДАГОГА")}
+        title={t("То, что заметно каждый день")}
+        description={t(
+          "Опирайтесь на наблюдения за последние две недели в привычной для ребёнка обстановке.",
+        )}
       />
       <div className="question-layout">
         <Card className="question-sidebar">
-          <h3>Области наблюдения</h3>
+          <h3>{t("Области наблюдения")}</h3>
           {categories.map((c, i) => (
             <div className={q.category === i ? "current" : ""} key={c}>
               <span>{i + 1}</span>
@@ -66,22 +73,26 @@ export default function Questionnaire() {
             </div>
           ))}
           <p className="small-note">
-            Иллюстративные вопросы. Анкета не является валидированным
-            клиническим инструментом.
+            {t(
+              "Иллюстративные вопросы. Анкета не является валидированным клиническим инструментом.",
+            )}
           </p>
         </Card>
         <Card className="question-card">
           <div className="section-line">
-            <span className="eyebrow">ВОПРОС {index + 1} ИЗ 10</span>
+            <span className="eyebrow">
+              {t("ВОПРОС")} {index + 1} {t("ИЗ 10")}
+            </span>
             <span className="muted">
-              {Object.keys(session.answers).length * 10}% заполнено
+              {Object.keys(session.answers).length * 10}
+              {t("% заполнено")}
             </span>
           </div>
           <Progress value={Object.keys(session.answers).length * 10} />
           <span className="pill">{categories[q.category]}</span>
           <h2>{q.text}</h2>
           <p className="muted">
-            Если опыта недостаточно, выберите соответствующий вариант.
+            {t("Если опыта недостаточно, выберите соответствующий вариант.")}
           </p>
           <div className="question-options">
             {frequency.map((label, i) => (
@@ -105,7 +116,7 @@ export default function Questionnaire() {
               onClick={() => setIndex(index - 1)}
             >
               <ArrowLeft size={17} />
-              Назад
+              {t("Назад")}
             </button>
             {index < 9 ? (
               <button
@@ -113,7 +124,7 @@ export default function Questionnaire() {
                 disabled={session.answers[q.id] === undefined}
                 onClick={() => setIndex(index + 1)}
               >
-                Далее
+                {t("Далее")}
                 <ArrowRight size={17} />
               </button>
             ) : (
@@ -129,7 +140,7 @@ export default function Questionnaire() {
                   setSession(next);
                 }}
               >
-                Завершить анкету
+                {t("Завершить анкету")}
                 <CheckCircle2 size={17} />
               </button>
             )}
@@ -137,8 +148,8 @@ export default function Questionnaire() {
           <p className="save-status" role="status">
             <Save size={14} />
             {saved
-              ? "Ответ сохранён на этом устройстве"
-              : "Прогресс сохраняется после каждого ответа"}
+              ? t("Ответ сохранён на этом устройстве")
+              : t("Прогресс сохраняется после каждого ответа")}
           </p>
         </Card>
       </div>

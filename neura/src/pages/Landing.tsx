@@ -1,3 +1,5 @@
+import { PreferencesControls } from "../components/PreferencesControls";
+import { useT, localeTag } from "../i18n";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -12,50 +14,54 @@ import { Logo } from "../layouts/AppLayout";
 import { Scene } from "../components/Scene";
 import { Badge, Disclaimer } from "../components/UI";
 export default function Landing() {
+  const t = useT();
   return (
     <div className="landing">
       <header className="landing-header">
         <Logo />
+        <PreferencesControls />
         <nav>
-          <a href="#modules">Возможности</a>
-          <a href="#how">Как это работает</a>
-          <Link to="/about">О проекте</Link>
+          <a href="#modules">{t("Возможности")}</a>
+          <a href="#how">{t("Как это работает")}</a>
+          <Link to="/about">{t("О проекте")}</Link>
         </nav>
         <Link className="button secondary" to="/dashboard">
-          Открыть платформу
+          {t("Открыть платформу")}
           <ArrowUpRight size={17} />
         </Link>
       </header>
       <section className="hero">
         <div className="hero-copy">
-          <Badge>Технологии с вниманием к ребёнку</Badge>
+          <Badge>{t("Технологии с вниманием к ребёнку")}</Badge>
           <h1>
-            Замечать особенности.
+            {t("Замечать особенности.")}
             <br />
-            <em>Открывать возможности.</em>
+            <em>{t("Открывать возможности.")}</em>
           </h1>
           <p>
-            Neura объединяет игру и наблюдения педагогов, чтобы помочь
-            специалистам лучше понимать особенности развития каждого ребёнка.
+            {t(
+              "Neura объединяет игру и наблюдения педагогов, чтобы помочь специалистам лучше понимать особенности развития каждого ребёнка.",
+            )}
           </p>
           <div className="actions">
             <Link className="button" to="/dashboard">
-              Посмотреть платформу
+              {t("Посмотреть платформу")}
               <ArrowRight size={18} />
             </Link>
             <Link className="button secondary" to="/game">
-              Попробовать демо
+              {t("Попробовать демо")}
             </Link>
           </div>
           <div className="hero-note">
             <ShieldCheck size={16} />
-            Поддержка специалиста · Без постановки диагноза
+            {t("Поддержка специалиста · Без постановки диагноза")}
           </div>
         </div>
         <div className="hero-visual">
           <div className="visual-top">
             <span className="status-dot" />
-            Пространство маленьких открытий<span>01 / 08</span>
+            {t("Пространство маленьких открытий")}
+            <span>01 / 08</span>
           </div>
           <Scene />
           <div className="visual-bottom">
@@ -63,8 +69,8 @@ export default function Landing() {
               <Gamepad2 />
             </div>
             <div>
-              <strong>Приключение Айко</strong>
-              <small>Играем. Наблюдаем. Понимаем.</small>
+              <strong>{t("Приключение Айко")}</strong>
+              <small>{t("Играем. Наблюдаем. Понимаем.")}</small>
             </div>
             <span className="round-arrow">
               <ArrowUpRight />
@@ -72,43 +78,49 @@ export default function Landing() {
           </div>
           <div className="floating-note">
             <Check size={17} />
-            Каждый способ общения важен
+            {t("Каждый способ общения важен")}
           </div>
         </div>
       </section>
       <div className="landing-divider">
-        <span>ОДНА ПЛАТФОРМА — РАЗНЫЕ ПЕРСПЕКТИВЫ</span>
-        <span>Педагогам</span>
-        <span>Специалистам</span>
-        <span>Родителям</span>
+        <span>{t("ОДНА ПЛАТФОРМА — РАЗНЫЕ ПЕРСПЕКТИВЫ")}</span>
+        <span>{t("Педагогам")}</span>
+        <span>{t("Специалистам")}</span>
+        <span>{t("Родителям")}</span>
       </div>
       <section id="modules" className="landing-section">
-        <div className="eyebrow">ЦЕЛОСТНЫЙ ВЗГЛЯД</div>
+        <div className="eyebrow">{t("ЦЕЛОСТНЫЙ ВЗГЛЯД")}</div>
         <h2>
-          Больше контекста.
+          {t("Больше контекста.")}
           <br />
-          Больше понимания.
+          {t("Больше понимания.")}
         </h2>
         <div className="modules-grid">
           {[
             {
               icon: Gamepad2,
-              title: "Игровое наблюдение",
-              text: "Восемь повседневных ситуаций в дружелюбном мире Айко. Ответы и действия становятся материалом для наблюдения.",
+              title: t("Игровое наблюдение"),
+              text: t(
+                "Восемь повседневных ситуаций в дружелюбном мире Айко. Ответы и действия становятся материалом для наблюдения.",
+              ),
               to: "/game",
               tone: "blue",
             },
             {
               icon: ClipboardList,
-              title: "Взгляд педагога",
-              text: "Структурированная анкета помогает собрать опыт ежедневного общения и обсудить важные детали.",
+              title: t("Взгляд педагога"),
+              text: t(
+                "Структурированная анкета помогает собрать опыт ежедневного общения и обсудить важные детали.",
+              ),
               to: "/questionnaire",
               tone: "teal",
             },
             {
               icon: ScanLine,
-              title: "Исследование МРТ",
-              text: "Экспериментальная концепция анализа изображений. Сейчас — прозрачная симуляция без обученной модели.",
+              title: t("Исследование МРТ"),
+              text: t(
+                "Экспериментальная концепция анализа изображений. Сейчас — прозрачная симуляция без обученной модели.",
+              ),
               to: "/mri",
               tone: "purple",
             },
@@ -123,7 +135,7 @@ export default function Landing() {
               <h3>{title}</h3>
               <p>{text}</p>
               <span className="text-link">
-                Открыть модуль
+                {t("Открыть модуль")}
                 <ArrowRight size={17} />
               </span>
             </Link>
@@ -132,19 +144,23 @@ export default function Landing() {
       </section>
       <section id="how" className="landing-section how-section">
         <div>
-          <div className="eyebrow">ПРОСТОЙ ПУТЬ</div>
+          <div className="eyebrow">{t("ПРОСТОЙ ПУТЬ")}</div>
           <h2>
-            От маленького наблюдения
-            <br />к содержательному разговору.
+            {t("От маленького наблюдения")}
+            <br />
+            {t("к содержательному разговору.")}
           </h2>
         </div>
         <div className="how-grid">
           {[
-            ["Выберите инструмент", "Начните с игры или наблюдений педагога."],
-            ["Соберите контекст", "Пройдите сценарий в удобном темпе."],
             [
-              "Обсудите со специалистом",
-              "Используйте описательный отчёт как основу разговора.",
+              t("Выберите инструмент"),
+              t("Начните с игры или наблюдений педагога."),
+            ],
+            [t("Соберите контекст"), t("Пройдите сценарий в удобном темпе.")],
+            [
+              t("Обсудите со специалистом"),
+              t("Используйте описательный отчёт как основу разговора."),
             ],
           ].map(([title, text], i) => (
             <div key={title}>
@@ -156,21 +172,21 @@ export default function Landing() {
         </div>
       </section>
       <section className="landing-section">
-        <div className="eyebrow">ВОКРУГ РЕБЁНКА</div>
-        <h2>Для тех, кто рядом.</h2>
+        <div className="eyebrow">{t("ВОКРУГ РЕБЁНКА")}</div>
+        <h2>{t("Для тех, кто рядом.")}</h2>
         <div className="benefits-grid">
           {[
             [
-              "Педагогам",
-              "Удобно фиксировать наблюдения в привычных ситуациях.",
+              t("Педагогам"),
+              t("Удобно фиксировать наблюдения в привычных ситуациях."),
             ],
             [
-              "Специалистам",
-              "Видеть ответы и контекст, а не непрозрачные оценки.",
+              t("Специалистам"),
+              t("Видеть ответы и контекст, а не непрозрачные оценки."),
             ],
             [
-              "Родителям",
-              "Получать понятную основу для обсуждения со специалистом.",
+              t("Родителям"),
+              t("Получать понятную основу для обсуждения со специалистом."),
             ],
           ].map(([t, p]) => (
             <div key={t}>
@@ -185,7 +201,7 @@ export default function Landing() {
       <footer className="landing-footer">
         <Logo />
         <Link to="/about">
-          Ответственный подход к AI
+          {t("Ответственный подход к AI")}
           <ArrowUpRight size={15} />
         </Link>
       </footer>

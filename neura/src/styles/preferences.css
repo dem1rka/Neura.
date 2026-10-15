@@ -1,0 +1,402 @@
+/* Shared appearance tokens. Illustration colours remain authored SVG colours. */
+:root {
+  --surface: #fff;
+  --surface-raised: #f4f7fc;
+  --surface-border: #dce5f1;
+  --text-primary: #23334c;
+  --text-secondary: #60738c;
+  --selection: #eaf2ff;
+  --selection-text: #265fbc;
+}
+:root[data-theme="dark"] {
+  --surface: #162237;
+  --surface-raised: #1e2e46;
+  --surface-border: #30435e;
+  --text-primary: #e8eef8;
+  --text-secondary: #a8b9cf;
+  --selection: #243e64;
+  --selection-text: #a9ccff;
+  color: var(--text-primary);
+  background: #101a2b;
+  color-scheme: dark;
+}
+.preferences-controls {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+.language-control {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  min-height: 38px;
+  border: 1px solid var(--surface-border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+.language-control select {
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 12px;
+  padding: 8px 0;
+  max-width: 105px;
+  cursor: pointer;
+}
+.language-control select option {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.theme-control {
+  display: flex;
+  padding: 3px;
+  gap: 3px;
+  border: 1px solid var(--surface-border);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.theme-control button {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 30px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  background: transparent;
+}
+.theme-control button[aria-pressed="true"] {
+  color: var(--selection-text);
+  background: var(--selection);
+}
+.theme-control button:hover {
+  background: var(--surface-raised);
+}
+.language-control:focus-within {
+  outline: 2px solid #6d9eeb;
+  outline-offset: 2px;
+}
+.language-control select:focus-visible {
+  outline: none;
+}
+.landing-header {
+  flex-wrap: wrap;
+}
+.landing-header > .logo {
+  order: 0;
+}
+.landing-header > nav {
+  order: 1;
+}
+.landing-header > .preferences-controls {
+  order: 2;
+}
+.landing-header > .button {
+  order: 3;
+}
+.breadcrumbs {
+  min-width: 0;
+}
+.breadcrumbs strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-item {
+  white-space: normal;
+}
+.nav-item > svg {
+  flex-shrink: 0;
+}
+html[data-theme="dark"]
+  :is(
+    .sidebar,
+    .topbar,
+    .card,
+    .game-step,
+    .answer,
+    .example-file,
+    .art-note,
+    .floating-note,
+    .hero-visual,
+    select
+  ) {
+  background: var(--surface);
+  border-color: var(--surface-border);
+  color: var(--text-primary);
+}
+html[data-theme="dark"] :is(.landing, .app-main) {
+  background: #101a2b;
+}
+html[data-theme="dark"]
+  :is(
+    p,
+    .muted,
+    .nav-item,
+    .stat span,
+    .stat small,
+    .small-note,
+    .section-line > span,
+    .module-foot,
+    .module-top,
+    .tiny-label,
+    .workspace-label,
+    .eyebrow,
+    .breadcrumbs,
+    .breadcrumbs strong,
+    .profile small,
+    .activity-list small,
+    .chart-legend,
+    .app-footer,
+    .game-bottom > span,
+    .intro-facts,
+    .observation-grid small,
+    .question-sidebar > div,
+    .save-status,
+    .example-file small,
+    .or-line,
+    .roadmap small,
+    .hero-note,
+    .landing-header nav,
+    .visual-top,
+    .visual-bottom small,
+    .landing-divider,
+    .landing-footer
+  ) {
+  color: var(--text-secondary);
+}
+html[data-theme="dark"]
+  :is(
+    .profile,
+    .module-foot,
+    .activity-list > a,
+    .report-answer,
+    .roadmap > div,
+    .landing-divider,
+    .landing-footer,
+    .how-grid > div,
+    td,
+    th
+  ) {
+  border-color: var(--surface-border);
+}
+html[data-theme="dark"]
+  :is(
+    .nav-item.active,
+    .answer.selected,
+    .example-file.chosen,
+    .question-sidebar > div.current
+  ) {
+  background: var(--selection);
+  color: var(--selection-text);
+  border-color: #5784bd;
+}
+html[data-theme="dark"]
+  :is(.nav-item:hover, .answer:hover, .button.secondary:hover) {
+  background: var(--surface-raised);
+}
+html[data-theme="dark"]
+  :is(
+    .button.secondary,
+    .repeat-story,
+    .dropzone,
+    .how-section,
+    .pipeline-steps > div,
+    th
+  ) {
+  background: var(--surface-raised);
+  border-color: var(--surface-border);
+  color: var(--text-primary);
+}
+html[data-theme="dark"]
+  :is(
+    .badge,
+    .pill,
+    .profile > span,
+    .avatar,
+    .answer > span,
+    .question-sidebar > div span,
+    .round-arrow,
+    .how-grid > div > span
+  ) {
+  background: #233753;
+  color: #b4ceee;
+  border-color: #355072;
+}
+html[data-theme="dark"] :is(.welcome-banner, .pitch-card, .mission) {
+  background: linear-gradient(115deg, #1c2e4a, #20394d);
+  border-color: #324c6a;
+}
+html[data-theme="dark"]
+  :is(
+    .pitch-card h3,
+    .pitch-card a,
+    .welcome-banner a,
+    .text-link,
+    .repeat,
+    .area-number,
+    .blue-text,
+    .hero h1 em
+  ) {
+  color: #9fc5ff;
+}
+html[data-theme="dark"] .welcome-banner .pill {
+  background: #2a4263;
+  color: #bfd7f8;
+}
+html[data-theme="dark"] .blue {
+  background: #253d60;
+  color: #9fc2ff;
+}
+html[data-theme="dark"] :is(.purple, .nav-item small, .lab-notice) {
+  background: #302b49;
+  color: #c5b7e9;
+  border-color: #4b4267;
+}
+html[data-theme="dark"] :is(.teal, .activity-icon, .pipeline-steps .complete) {
+  background: #203e40;
+  color: #9dd9ce;
+}
+html[data-theme="dark"] .orange {
+  background: #453a2d;
+  color: #e6c28c;
+}
+html[data-theme="dark"] .disclaimer {
+  background: #1b2c44;
+  border-color: #314866;
+  color: #adc7e6;
+}
+html[data-theme="dark"] :is(.disclaimer p, .disclaimer strong) {
+  color: #b3c5db;
+}
+html[data-theme="dark"] .progress {
+  background: #2a3b53;
+}
+html[data-theme="dark"] .answer.selected > span:not(.radio-dot) {
+  color: #fff;
+  background: #467ad0;
+}
+html[data-theme="dark"] .answer .radio-dot {
+  background: var(--surface);
+  border-color: #7188a7;
+}
+html[data-theme="dark"] .answer.selected .radio-dot {
+  border-color: #7faef5;
+}
+html[data-theme="dark"] .lab-notice p {
+  color: #bfb3d8;
+}
+html[data-theme="dark"] .lab-notice > .pill {
+  background: #463b60;
+  color: #ded0fa;
+}
+html[data-theme="dark"] .dropzone.drag {
+  background: #28436a;
+  border-color: #8cb7f7;
+}
+html[data-theme="dark"] .mri-preview {
+  background: #0e1a2b;
+  border-color: #344864;
+}
+html[data-theme="dark"] .mri-preview p {
+  color: #a5b9d1;
+}
+html[data-theme="dark"] .simulation-result {
+  background: #183732;
+  border-color: #31594e;
+}
+html[data-theme="dark"] .result-tags span {
+  background: #264b43;
+  color: #b4decd;
+}
+html[data-theme="dark"] .roadmap-dot {
+  background: #536b8e;
+}
+html[data-theme="dark"] .roadmap-dot.now {
+  background: #87b8ff;
+}
+html[data-theme="dark"] .storage-alert {
+  background: #483c26;
+  border-color: #84704a;
+  color: #f7dfb6;
+}
+html[data-theme="dark"] .error {
+  color: #ffa9b5 !important;
+}
+html[data-theme="dark"] .recharts-cartesian-grid line {
+  stroke: #30445f;
+}
+html[data-theme="dark"] .recharts-cartesian-axis line {
+  stroke: #6e819c;
+}
+html[data-theme="dark"] .recharts-text {
+  fill: #b3c3d7;
+}
+html[data-theme="dark"] .recharts-default-tooltip {
+  background: #1c2c44 !important;
+  border-color: #49617e !important;
+  border-radius: 8px;
+  color: #e8eef8;
+}
+html[data-theme="dark"] .recharts-tooltip-label {
+  color: #e8eef8;
+}
+html[data-theme="dark"] .recharts-tooltip-cursor {
+  fill: #2b405e;
+}
+@media (max-width: 1200px) {
+  .topbar {
+    gap: 12px;
+  }
+  .topbar > .badge {
+    display: none;
+  }
+  .landing-header nav {
+    gap: 15px;
+  }
+}
+@media (max-width: 700px) {
+  .topbar > .avatar {
+    display: none;
+  }
+  .topbar .preferences-controls {
+    margin-left: auto;
+  }
+  .landing-header > .preferences-controls {
+    order: 4;
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+  .language-control {
+    min-height: 40px;
+  }
+  .theme-control button {
+    min-width: 36px;
+    min-height: 34px;
+  }
+}
+@media print {
+  .preferences-controls {
+    display: none !important;
+  }
+  html[data-theme="dark"],
+  html[data-theme="dark"] body,
+  html[data-theme="dark"] .app-main {
+    color: #23334c !important;
+    background: white !important;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] :is(.card, .disclaimer, th, .pill) {
+    background: white !important;
+    color: #23334c !important;
+    border-color: #dce5f1 !important;
+  }
+  html[data-theme="dark"] :is(p, span, small, strong, h1, h2, h3) {
+    color: #23334c !important;
+  }
+  html[data-theme="dark"] .recharts-text {
+    fill: #536780;
+  }
+}

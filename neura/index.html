@@ -9,6 +9,20 @@
       content="Neura — прототип платформы для наблюдения за особенностями развития детей."
     />
     <title>Neura · Пространство наблюдения</title>
+    <script>
+      try {
+        const p = JSON.parse(
+          localStorage.getItem("neura.preferences.v1") || "{}",
+        );
+        document.documentElement.dataset.theme =
+          p.theme === "dark" ? "dark" : "light";
+        document.documentElement.style.colorScheme =
+          p.theme === "dark" ? "dark" : "light";
+        document.documentElement.lang = ["ru", "kk", "en"].includes(p.language)
+          ? p.language
+          : "ru";
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

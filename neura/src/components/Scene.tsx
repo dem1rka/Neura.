@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../i18n";
 export function Scene({
   scene = "friend",
   compact = false,
@@ -5,12 +6,13 @@ export function Scene({
   scene?: string;
   compact?: boolean;
 }) {
+  const t = useT();
   return (
     <svg
       className={"scene " + (compact ? "compact" : "")}
       viewBox="0 0 700 330"
       role="img"
-      aria-label={`Авторская иллюстрация: Айко и Мика, ${scene}`}
+      aria-label={t("Авторская иллюстрация: Айко и Мика, {0}", { "0": scene })}
     >
       <defs>
         <linearGradient id="sky" x2="0" y2="1">

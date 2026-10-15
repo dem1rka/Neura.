@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../../i18n";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -7,7 +8,7 @@ import {
   Clock,
   ShieldCheck,
 } from "lucide-react";
-import { situations } from "../../data/content";
+import { getContent } from "../../data/content";
 import { service, read, write } from "../../services/storage";
 import type { GameSession } from "../../types";
 import { Card, Heading, Progress } from "../../components/UI";
@@ -20,6 +21,8 @@ interface Draft {
   seconds: number;
 }
 export default function Game() {
+  const t = useT();
+  const { situations } = getContent(t);
   const [session, setSession] = useState<GameSession | null>(service.game);
   const saved = read<Draft | null>("game-draft", null);
   const index = session?.answers.length ?? 0;
@@ -93,20 +96,22 @@ export default function Game() {
     return (
       <Card className="game-complete">
         <PartyPopper size={48} />
-        <h1>Ты помог Айко открыть новый мир!</h1>
-        <p>Все восемь приключений позади. Спасибо за твои идеи и внимание.</p>
+        <h1>{t("Ты помог Айко открыть новый мир!")}</h1>
+        <p>
+          {t("Все восемь приключений позади. Спасибо за твои идеи и внимание.")}
+        </p>
         <Scene scene="gift" />
         <div className="actions">
           <Link className="button" to="/game/report">
-            Отчёт для взрослого
+            {t("Отчёт для взрослого")}
             <ArrowRight size={18} />
           </Link>
           <button className="button secondary" onClick={begin}>
-            Новое приключение
+            {t("Новое приключение")}
           </button>
         </div>
         <p className="small-note">
-          Новое приключение заменит текущую сессию на этом устройстве.
+          {t("Новое приключение заменит текущую сессию на этом устройстве.")}
         </p>
       </Card>
     );
@@ -114,34 +119,36 @@ export default function Game() {
     return (
       <>
         <Heading
-          eyebrow="ИГРОВОЕ НАБЛЮДЕНИЕ"
-          title="Приключение Айко"
-          description="Восемь маленьких историй о дружбе, чувствах и новых открытиях."
+          eyebrow={t("ИГРОВОЕ НАБЛЮДЕНИЕ")}
+          title={t("Приключение Айко")}
+          description={t(
+            "Восемь маленьких историй о дружбе, чувствах и новых открытиях.",
+          )}
         />
         <Card className="game-intro">
           <Scene />
           <div>
-            <span className="pill">ЗНАКОМЬСЯ, ТВОЙ НОВЫЙ ДРУГ</span>
+            <span className="pill">{t("ЗНАКОМЬСЯ, ТВОЙ НОВЫЙ ДРУГ")}</span>
             <h2>
-              Привет! Я Айко.
+              {t("Привет! Я Айко.")}
               <br />
-              Отправимся в приключение?
+              {t("Отправимся в приключение?")}
             </h2>
             <p>
-              Будем знакомиться, помогать друзьям и придумывать решения. Выбирай
-              вариант, который тебе ближе. Здесь можно подумать и изменить
-              ответ.
+              {t(
+                "Будем знакомиться, помогать друзьям и придумывать решения. Выбирай вариант, который тебе ближе. Здесь можно подумать и изменить ответ.",
+              )}
             </p>
             <div className="intro-facts">
               <span>
                 <Clock size={18} />
-                10–15 минут
+                {t("10–15 минут")}
               </span>
-              <span>7–8 лет</span>
-              <span>8 историй</span>
+              <span>{t("7–8 лет")}</span>
+              <span>{t("8 историй")}</span>
             </div>
             <button className="button" onClick={begin}>
-              Начать приключение
+              {t("Начать приключение")}
               <ArrowRight size={18} />
             </button>
           </div>
@@ -149,10 +156,10 @@ export default function Game() {
         <div className="disclaimer">
           <ShieldCheck />
           <p>
-            <strong>Для сопровождающего взрослого.</strong> Объясните, что это
-            игра, а не экзамен. Можно сделать перерыв. Фиксируются ответы,
-            время, изменения выбора и повторения инструкции; диагностические
-            баллы не рассчитываются. Прогресс сохраняется на этом устройстве.
+            <strong>{t("Для сопровождающего взрослого.")}</strong>
+            {t(
+              "Объясните, что это игра, а не экзамен. Можно сделать перерыв. Фиксируются ответы, время, изменения выбора и повторения инструкции; диагностические баллы не рассчитываются. Прогресс сохраняется на этом устройстве.",
+            )}
           </p>
         </div>
       </>
@@ -161,14 +168,16 @@ export default function Game() {
     <div className="game-container">
       <div className="section-line">
         <Link to="/dashboard" className="muted">
-          ← К платформе
+          {t("← К платформе")}
         </Link>
-        <span className="pill">Приключение Айко</span>
+        <span className="pill">{t("Приключение Айко")}</span>
         <strong>{index + 1} / 8</strong>
       </div>
       <Progress value={(index / 8) * 100} />
       <div className="game-step">
-        <div className="eyebrow">ИСТОРИЯ {index + 1}</div>
+        <div className="eyebrow">
+          {t("ИСТОРИЯ")} {index + 1}
+        </div>
         <h1>{item.title}</h1>
         <Scene scene={item.scene} />
         <h2 className="story">{item.story}</h2>
@@ -181,7 +190,7 @@ export default function Game() {
           }}
         >
           <RotateCcw size={17} />
-          Повторить инструкцию
+          {t("Повторить инструкцию")}
         </button>
         {repeat && (
           <p className="repeat-story" role="status">
@@ -207,9 +216,9 @@ export default function Game() {
           ))}
         </div>
         <div className="game-bottom">
-          <span>Можно выбрать любой подходящий тебе вариант</span>
+          <span>{t("Можно выбрать любой подходящий тебе вариант")}</span>
           <button className="button" disabled={choice === null} onClick={next}>
-            {index === 7 ? "Завершить" : "Дальше"}
+            {index === 7 ? t("Завершить") : t("Дальше")}
             <ArrowRight size={18} />
           </button>
         </div>

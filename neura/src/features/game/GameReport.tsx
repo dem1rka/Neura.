@@ -1,3 +1,4 @@
+import { useT, localeTag } from "../../i18n";
 import { Link } from "react-router-dom";
 import { Printer, ArrowRight } from "lucide-react";
 import {
@@ -10,42 +11,49 @@ import {
   CartesianGrid,
 } from "recharts";
 import { service, summarize } from "../../services/storage";
-import { situations, areas } from "../../data/content";
+import { getContent } from "../../data/content";
 import { Card, Heading, Empty, Disclaimer } from "../../components/UI";
 export default function GameReport() {
+  const t = useT();
+  const { situations, areas } = getContent(t);
   const s = service.game();
   if (!s?.completedAt)
     return (
       <Empty
-        title="Отчёт появится после приключения"
-        text="Пройдите восемь игровых ситуаций, чтобы увидеть записанные наблюдения."
+        title={t("Отчёт появится после приключения")}
+        text={t(
+          "Пройдите восемь игровых ситуаций, чтобы увидеть записанные наблюдения.",
+        )}
         to="/game"
-        label="Перейти к игре"
+        label={t("Перейти к игре")}
       />
     );
   const totals = summarize(s);
   return (
     <>
       <Heading
-        eyebrow="ИГРОВОЕ НАБЛЮДЕНИЕ · ОТЧЁТ"
-        title="Маленькие действия. Больше контекста."
-        description={`Сессия ${s.id.slice(0, 8)} · ${new Date(s.completedAt).toLocaleString("ru-RU")} · завершены 8 из 8 ситуаций`}
+        eyebrow={t("ИГРОВОЕ НАБЛЮДЕНИЕ · ОТЧЁТ")}
+        title={t("Маленькие действия. Больше контекста.")}
+        description={t("Сессия {0} · {1} · завершены 8 из 8 ситуаций", {
+          "0": s.id.slice(0, 8),
+          "1": new Date(s.completedAt).toLocaleString(localeTag()),
+        })}
         action={
           <button
             className="button secondary print-hide"
             onClick={() => window.print()}
           >
             <Printer size={18} />
-            Печать / PDF
+            {t("Печать / PDF")}
           </button>
         }
       />
       <div className="stats-grid">
         {[
-          ["Ситуаций", "8 / 8"],
-          ["Время ответов", `${totals.seconds} сек.`],
-          ["Изменений выбора", totals.changes],
-          ["Повторений инструкции", totals.help],
+          [t("Ситуаций"), "8 / 8"],
+          [t("Время ответов"), t("{0} сек.", { "0": totals.seconds })],
+          [t("Изменений выбора"), totals.changes],
+          [t("Повторений инструкции"), totals.help],
         ].map(([label, value]) => (
           <Card className="stat" key={label}>
             <span>{label}</span>
@@ -54,9 +62,11 @@ export default function GameReport() {
         ))}
       </div>
       <Card>
-        <h2>Время ответа по ситуациям</h2>
+        <h2>{t("Время ответа по ситуациям")}</h2>
         <p className="muted">
-          Секунды до перехода к следующему шагу, включая повторения и паузы.
+          {t(
+            "Секунды до перехода к следующему шагу, включая повторения и паузы.",
+          )}
         </p>
         <div className="chart">
           <ResponsiveContainer width="100%" height="100%">
@@ -69,15 +79,20 @@ export default function GameReport() {
               <CartesianGrid vertical={false} stroke="#edf1f5" />
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip formatter={(v) => [`${v} сек.`, "Время"]} />
+              <Tooltip
+                formatter={(v) => [
+                  t("{0} сек.", { "0": String(v) }),
+                  t("Время"),
+                ]}
+              />
               <Bar dataKey="seconds" fill="#6a96ee" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </Card>
       <div className="section-line">
-        <h2>Пять областей наблюдения</h2>
-        <span>Без рейтингов и диагностических баллов</span>
+        <h2>{t("Пять областей наблюдения")}</h2>
+        <span>{t("Без рейтингов и диагностических баллов")}</span>
       </div>
       <div className="observation-grid">
         {areas.map((area, i) => {
@@ -91,29 +106,34 @@ export default function GameReport() {
               <span className="area-number">0{i + 1}</span>
               <h3>{area}</h3>
               <p>
-                Ситуаций: {answers.length}. Изменений выбора: {changes}.
-                Повторений инструкции: {help}.
+                {t("Ситуаций:")} {answers.length}
+                {t(". Изменений выбора:")} {changes}
+                {t(". Повторений инструкции:")} {help}.
               </p>
               <small>
                 {help
-                  ? "Инструкция была повторена. Обсудите, какая поддержка оказалась удобной."
-                  : "Повтор инструкции не запрашивался. Это не определяет уровень навыка."}
+                  ? t(
+                      "Инструкция была повторена. Обсудите, какая поддержка оказалась удобной.",
+                    )
+                  : t(
+                      "Повтор инструкции не запрашивался. Это не определяет уровень навыка.",
+                    )}
               </small>
             </Card>
           );
         })}
       </div>
       <Card>
-        <h2>Ответы и контекст</h2>
+        <h2>{t("Ответы и контекст")}</h2>
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Ситуация</th>
-                <th>Выбранный ответ</th>
-                <th>Время</th>
-                <th>Изменения</th>
-                <th>Повторы</th>
+                <th>{t("Ситуация")}</th>
+                <th>{t("Выбранный ответ")}</th>
+                <th>{t("Время")}</th>
+                <th>{t("Изменения")}</th>
+                <th>{t("Повторы")}</th>
               </tr>
             </thead>
             <tbody>
@@ -121,7 +141,9 @@ export default function GameReport() {
                 <tr key={a.situationId}>
                   <td>{situations[a.situationId].title}</td>
                   <td>{situations[a.situationId].options[a.choice]}</td>
-                  <td>{a.seconds} с</td>
+                  <td>
+                    {a.seconds} {t("с")}
+                  </td>
                   <td>{a.changes}</td>
                   <td>{a.help}</td>
                 </tr>
@@ -130,14 +152,14 @@ export default function GameReport() {
           </table>
         </div>
         <p className="small-note">
-          Метод: прямой подсчёт событий интерфейса. Выбор ответа не оценивается
-          как правильный или неправильный. Время может включать перерывы и не
-          является показателем способностей.
+          {t(
+            "Метод: прямой подсчёт событий интерфейса. Выбор ответа не оценивается как правильный или неправильный. Время может включать перерывы и не является показателем способностей.",
+          )}
         </p>
       </Card>
       <Disclaimer />
       <Link className="text-link print-hide" to="/questionnaire">
-        Дополнить наблюдение анкетой педагога
+        {t("Дополнить наблюдение анкетой педагога")}
         <ArrowRight size={18} />
       </Link>
     </>

@@ -156,3 +156,20 @@ export const demoActivity = [
     demo: true,
   },
 ];
+
+export function getContent(t: (message: string) => string) {
+  return {
+    brand: { ...brand, subtitle: t(brand.subtitle) },
+    areas: areas.map(t),
+    categories: categories.map(t),
+    frequency: frequency.map(t),
+    situations: situations.map((s) => ({
+      ...s,
+      title: t(s.title),
+      story: t(s.story),
+      options: s.options.map(t),
+    })),
+    questions: questions.map((q) => ({ ...q, text: t(q.text) })),
+    demoActivity: demoActivity.map((a) => ({ ...a, title: t(a.title) })),
+  };
+}
