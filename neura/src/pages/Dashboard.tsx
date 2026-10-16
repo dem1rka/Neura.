@@ -58,7 +58,7 @@ export default function Dashboard() {
     );
   const g = Number(!!data.game?.completedAt),
     q = Number(!!data.questionnaire.completedAt),
-    m = data.mri.length;
+    m = data.mri.filter((entry) => !entry.simulated).length;
   const local: Observation[] = [
     ...(g
       ? [
@@ -84,13 +84,18 @@ export default function Dashboard() {
       : []),
     ...data.mri.map((v) => ({
       id: v.id,
-      title: t("Локальная симуляция МРТ"),
+      title: v.simulated
+        ? t("Локальная симуляция МРТ")
+        : v.source === "example"
+          ? t("Просмотр демонстрационного МРТ")
+          : t("Локальный просмотр МРТ"),
       kind: "mri" as const,
       date: v.completedAt,
       demo: false,
+      simulated: v.simulated,
     })),
   ];
-  const activity = [
+  const activity: Observation[] = [
     ...local.sort((a, b) => b.date.localeCompare(a.date)),
     ...demoActivity,
   ].filter((a) => filter === "all" || a.kind === filter);
@@ -159,7 +164,7 @@ export default function Dashboard() {
             note: t("Опыт ежедневного общения"),
           },
           {
-            label: t("МРТ-симуляций"),
+            label: t("Просмотров МРТ"),
             value: 0 + m,
             icon: ScanLine,
             tone: "orange",
@@ -208,14 +213,14 @@ export default function Dashboard() {
           },
           {
             title: t("Исследовать глубже"),
-            label: t("МРТ · ЭКСПЕРИМЕНТАЛЬНО"),
+            label: t("МРТ · ИССЛЕДОВАНИЕ"),
             text: t(
-              "Познакомьтесь с концепцией анализа МРТ в прозрачной симуляции процесса.",
+              "Открывайте NIfTI-снимки, изучайте срезы и объём, сопоставляйте данные ABIDE.",
             ),
             to: "/mri",
             icon: ScanLine,
             tone: "purple",
-            foot: t("Без анализа медицинских данных"),
+            foot: t("2D и 3D · локальные файлы"),
           },
         ].map(({ title, label, text, to, icon: Icon, tone, foot }) => (
           <Link className="card module" to={to} key={to}>
@@ -353,7 +358,12 @@ export default function Dashboard() {
                     {a.demo
                       ? t("Вымышленный пример")
                       : new Date(a.date).toLocaleDateString(localeTag())}{" "}
-                    · {a.kind === "mri" ? t("Симуляция") : t("Завершено")}
+                    ·{" "}
+                    {a.kind === "mri"
+                      ? a.simulated || a.demo
+                        ? t("Симуляция")
+                        : t("Просмотрено")
+                      : t("Завершено")}
                   </small>
                 </div>
                 <Chevron />

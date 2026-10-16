@@ -1,5 +1,5 @@
 import { useT, localeTag, applyAppearance } from "./i18n";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
@@ -10,10 +10,10 @@ import Game from "./features/game/Game";
 import GameReport from "./features/game/GameReport";
 import Questionnaire from "./features/questionnaire/Questionnaire";
 import QuestionnaireReport from "./features/questionnaire/QuestionnaireReport";
-import MRI from "./features/mri/MRI";
 import { Empty } from "./components/UI";
 import "./styles/index.css";
 applyAppearance();
+const MRI = lazy(() => import("./features/mri/MRI"));
 function App() {
   const t = useT();
   const { pathname } = useLocation();
@@ -52,7 +52,20 @@ function App() {
             path="/questionnaire/report"
             element={<QuestionnaireReport />}
           />
-          <Route path="/mri" element={<MRI />} />
+          <Route
+            path="/mri"
+            element={
+              <Suspense
+                fallback={
+                  <div className="loading" role="status">
+                    {t("Загружаем инструменты визуализации")}
+                  </div>
+                }
+              >
+                <MRI />
+              </Suspense>
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route
             path="*"

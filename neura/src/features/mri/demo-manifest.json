@@ -1,0 +1,11 @@
+{
+  "file": "mprage.nii.gz",
+  "originalBytes": 16777568,
+  "compressedBytes": 3454333,
+  "dimensions": [
+    128,
+    256,
+    256
+  ],
+  "originalSha256": "066a51a95d580646bf51b628da11f00e09e4ec2da19b8b12431a95d079f60e9c"
+}

@@ -19,7 +19,7 @@ export interface MRIResult {
   id: string;
   completedAt: string;
   source: "example" | "local";
-  simulated: true;
+  simulated: boolean;
 }
 export interface Observation {
   id: string;
@@ -27,4 +27,5 @@ export interface Observation {
   kind: "game" | "questionnaire" | "mri";
   date: string;
   demo: boolean;
+  simulated?: boolean;
 }

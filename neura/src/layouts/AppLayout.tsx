@@ -37,7 +37,7 @@ export default function AppLayout() {
     ["/dashboard", t("Обзор"), LayoutDashboard],
     ["/game", t("Приключение Айко"), Gamepad2],
     ["/questionnaire", t("Анкета педагога"), ClipboardList],
-    ["/mri", t("Анализ МРТ"), ScanLine],
+    ["/mri", t("Просмотр МРТ"), ScanLine],
     ["/about", t("О проекте"), Info],
   ] as const;
   const [open, setOpen] = useState(false);
@@ -102,7 +102,11 @@ export default function AppLayout() {
                 t("Отчёт")}
             </strong>
           </div>
-          <Badge>{t("Демонстрационные данные")}</Badge>
+          <Badge>
+            {pathname === "/mri"
+              ? t("Локальные файлы")
+              : t("Демонстрационные данные")}
+          </Badge>
           <PreferencesControls />
           <span className="avatar">{t("ДС")}</span>
         </header>

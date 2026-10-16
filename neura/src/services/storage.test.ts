@@ -67,6 +67,12 @@ describe("local observation service", () => {
   });
   it("returns fallback when there is no stored value", () =>
     expect(read("missing", [])).toEqual([]));
+  it("keeps actual MRI views distinct from legacy simulations without storing scan data", () => {
+    service.saveMRI({ id: "old", completedAt: "2026-10-14", source: "example", simulated: true });
+    service.saveMRI({ id: "view", completedAt: "2026-10-16", source: "local", simulated: false });
+    expect(service.mri().filter((entry) => !entry.simulated).map((entry) => entry.id)).toEqual(["view"]);
+    expect(Object.keys(service.mri()[0])).toEqual(["id", "completedAt", "source", "simulated"]);
+  });
 });
 describe("content coverage", () => {
   it("provides eight four-option situations across five areas", () => {
