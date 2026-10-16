@@ -22,6 +22,7 @@ export interface MRIResult {
   simulated: boolean;
 }
 export interface Observation {
+  href?: string;
   id: string;
   title: string;
   kind: "game" | "questionnaire" | "mri";

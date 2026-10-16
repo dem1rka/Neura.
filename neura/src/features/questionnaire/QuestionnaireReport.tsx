@@ -23,7 +23,7 @@ export default function QuestionnaireReport() {
         text={t(
           "Ответьте на десять вопросов, чтобы получить описательный отчёт.",
         )}
-        to="/questionnaire"
+        to="/questionnaire/teacher"
         label={t("Открыть анкету")}
       />
     );

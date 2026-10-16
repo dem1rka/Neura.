@@ -36,7 +36,7 @@ export default function AppLayout() {
   const nav = [
     ["/dashboard", t("Обзор"), LayoutDashboard],
     ["/game", t("Приключение Айко"), Gamepad2],
-    ["/questionnaire", t("Анкета педагога"), ClipboardList],
+    ["/questionnaire", t("Анкеты и скрининг"), ClipboardList],
     ["/mri", t("Просмотр МРТ"), ScanLine],
     ["/about", t("О проекте"), Info],
   ] as const;

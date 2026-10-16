@@ -26,6 +26,7 @@ import { Scene } from "../components/Scene";
 import { service } from "../services/storage";
 import { getContent } from "../data/content";
 import type { Observation } from "../types";
+import { loadRecords } from "../features/screening/io";
 export default function Dashboard() {
   const t = useT();
   const { demoActivity } = getContent(t);
@@ -56,10 +57,19 @@ export default function Dashboard() {
         {t("Загружаем пространство наблюдений…")}
       </div>
     );
+  const screening = loadRecords().filter((r) => !r.demo);
   const g = Number(!!data.game?.completedAt),
-    q = Number(!!data.questionnaire.completedAt),
+    q = Number(!!data.questionnaire.completedAt) + screening.length,
     m = data.mri.filter((entry) => !entry.simulated).length;
   const local: Observation[] = [
+    ...screening.map((record) => ({
+      id: `screening-${record.id}`,
+      title: t("Наблюдение: {0}", { 0: record.id }),
+      kind: "questionnaire" as const,
+      date: record.date,
+      demo: false,
+      href: `/questionnaire?record=${encodeURIComponent(record.id)}`,
+    })),
     ...(g
       ? [
           {
@@ -71,7 +81,7 @@ export default function Dashboard() {
           },
         ]
       : []),
-    ...(q
+    ...(data.questionnaire.completedAt
       ? [
           {
             id: "local-q",
@@ -157,7 +167,7 @@ export default function Dashboard() {
             note: t("8 ситуаций в каждой игре"),
           },
           {
-            label: t("Анкет педагогов"),
+            label: t("Анкеты и скрининг"),
             value: 0 + q,
             icon: ClipboardList,
             tone: "teal",
@@ -201,7 +211,7 @@ export default function Dashboard() {
             foot: t("7–8 лет · 10–15 минут"),
           },
           {
-            title: t("Взгляд педагога"),
+            title: t("Анкеты и скрининг"),
             label: t("АНКЕТИРОВАНИЕ"),
             text: t(
               "Структурируйте наблюдения за общением, гибкостью и повседневным поведением.",
@@ -209,7 +219,7 @@ export default function Dashboard() {
             to: "/questionnaire",
             icon: ClipboardList,
             tone: "teal",
-            foot: t("10 вопросов · около 5 минут"),
+            foot: t("RU / ҚАЗ · анкеты и импорт"),
           },
           {
             title: t("Исследовать глубже"),
@@ -341,11 +351,11 @@ export default function Dashboard() {
             {activity.slice(0, 4).map((a) => (
               <Link
                 to={
-                  a.demo
+                  a.href || (a.demo
                     ? `/${a.kind === "questionnaire" ? "questionnaire" : a.kind === "game" ? "game" : "mri"}`
                     : a.kind === "mri"
                       ? "/mri"
-                      : `/${a.kind}/report`
+                      : `/${a.kind}/report`)
                 }
                 key={a.id}
               >

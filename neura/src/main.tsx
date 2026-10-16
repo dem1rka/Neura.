@@ -10,6 +10,7 @@ import Game from "./features/game/Game";
 import GameReport from "./features/game/GameReport";
 import Questionnaire from "./features/questionnaire/Questionnaire";
 import QuestionnaireReport from "./features/questionnaire/QuestionnaireReport";
+import Screening from "./features/screening/Screening";
 import { Empty } from "./components/UI";
 import "./styles/index.css";
 applyAppearance();
@@ -47,7 +48,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/game" element={<Game />} />
           <Route path="/game/report" element={<GameReport />} />
-          <Route path="/questionnaire" element={<Questionnaire />} />
+          <Route path="/questionnaire" element={<Screening />} />
+          <Route path="/questionnaire/teacher" element={<Questionnaire />} />
           <Route
             path="/questionnaire/report"
             element={<QuestionnaireReport />}
